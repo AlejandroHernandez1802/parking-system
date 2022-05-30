@@ -3,11 +3,11 @@ const Schema = mongoose.Schema;
 
 
 const ParkingSchema = new Schema({
-    userName: String(100),
-    userId: String(10),
-    vehicleNumber: String(6),
-    vehicleType: String(50),
-    vehicleDescription: String(500),
+    userName: String,
+    userId: String,
+    vehicleNumber: String,
+    vehicleType: String,
+    vehicleDescription: String,
     date: Date,
     time: String,
     status:  {
