@@ -59,7 +59,7 @@ class Controller{
         Admin.updateOne({
             _id: id
         }, data, (err, updatedAdmin) => {
-            if(err) throw err
+            if(err) throw err;
             res.json({
                 status:200,
                 message: "Admin updated correctly",
@@ -73,7 +73,7 @@ class Controller{
         Admin.findOne({
             _id: id
         }, (err, user) => {
-            if(err) throw err
+            if(err) throw err;
             res.json({
                 status:200,
                 message:"Admin found",
@@ -86,10 +86,61 @@ class Controller{
         Admin.deleteOne({
             _id: id
         }, (err) => {
-            if(err) throw err
+            if(err) throw err;
             res.json({
                 status:200,
                 message:"Correctly deleted"
+            })
+        })
+    }
+
+
+
+
+
+
+
+
+
+
+    
+
+
+    //Records queries
+    addRecord(res, data){
+        Record.create(data, (err, record) => {
+            if(err) throw err;
+            res.json({
+                status:200,
+                message: "Record added",
+                record
+            })
+        })
+    }
+
+    getRecords(res, adminId){
+        Record.find({
+            adminincharge: adminId
+        }, (err, records) => {
+            if(err) throw err;
+            res.json({
+                status:200,
+                message: 'Found it',
+                records
+            })
+        })
+    }
+
+
+    userExit(res, recordId, data){
+        Record.updateOne({
+            _id: recordId
+        }, data, (err,updatedRecord) => {
+            if(err) throw err
+            res.json({
+                status:200,
+                message:"The user left the parking lot.",
+                record: updatedRecord
             })
         })
     }

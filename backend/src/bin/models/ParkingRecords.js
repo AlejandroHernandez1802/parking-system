@@ -3,14 +3,24 @@ const Schema = mongoose.Schema;
 
 
 const ParkingSchema = new Schema({
-    userName: String,
-    userId: String,
-    vehicleNumber: String,
-    vehicleType: String,
-    vehicleDescription: String,
-    date: Date,
-    time: String,
+    username: String,
+    userid: String,
+    vehiclenumber: String,
+    vehicletype: String,
+    vehicledescription: String,
+    checkindate: Date,
+    checkintime: String,
+    departuredate: String,
+    departuretime: String,
     status:  {
+        type: Boolean,
+        default: true
+    },
+    adminincharge:{
+        ref:'Admin',
+        type: Schema.Types.ObjectId
+    },
+    hide:{
         type: Boolean,
         default: false
     }
