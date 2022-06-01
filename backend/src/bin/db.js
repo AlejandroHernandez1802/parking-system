@@ -54,7 +54,7 @@ class Controller{
         })
     }
 
-
+    //Update an admin
     updateAdmin(res, id, data){
         Admin.updateOne({
             _id: id
