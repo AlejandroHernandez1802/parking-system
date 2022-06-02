@@ -27,7 +27,7 @@ class Controller{
 
     //Queries
 
-    //Add a new admin
+    //Register a new admin
     addAdmin(res, data){
         Admin.create(data, (err, newAdmin) => {
             if(err) throw err;
@@ -40,7 +40,7 @@ class Controller{
         })
     }
 
-    //Login into an account
+    //Login into an admin account
     login(res, data){
         Admin.findOne({
             $and: [{email:data.email},{password:data.password}]
@@ -68,8 +68,8 @@ class Controller{
         })
     }
 
-
-    getAdmins(res, id){
+    //Get an specific admin
+    getAdmin(res, id){
         Admin.findOne({
             _id: id
         }, (err, user) => {
@@ -82,6 +82,19 @@ class Controller{
         })
     }
 
+    //Get all admins
+    getAllAdmins(res){
+        Admin.find((err, admin) => {
+            if(err) throw err
+            res.json({
+                status: 200,
+                message: "All admins found",
+                admin
+            })
+        })
+    }
+
+    //Delete admin
     deleteAdmin(res, id){
         Admin.deleteOne({
             _id: id
@@ -118,28 +131,74 @@ class Controller{
         })
     }
 
-    getRecords(res, adminId){
+    //get records made by an specific admin
+    getAdminRecords(res, adminId){
         Record.find({
             adminincharge: adminId
         }, (err, records) => {
             if(err) throw err;
             res.json({
                 status:200,
-                message: 'Found it',
+                message: 'Specific records',
+                records
+            })
+        })
+    }
+
+    //Get active records
+    getActiveRecords(res){
+        Record.find({
+            $and: [{hide:false},{status:true}]
+        }, (err, records) => {
+            if(err) throw err;
+            res.json({
+                status:200,
+                message: 'Active records',
                 records
             })
         })
     }
 
 
+    //Get all records
+    getAllRecords(res){
+        Record.find({
+            $and: [{hide:false},{status:false}]
+        }, (err, records) => {
+            if(err) throw err;
+            res.json({
+                status:200,
+                message: 'All records',
+                records
+            })
+        })
+    }
+
+
+
+    //Manage the user exit
     userExit(res, recordId, data){
         Record.updateOne({
             _id: recordId
         }, data, (err,updatedRecord) => {
-            if(err) throw err
+            if(err) throw err;
             res.json({
                 status:200,
                 message:"The user left the parking lot.",
+                record: updatedRecord
+            })
+        })
+    }
+
+    //Manage the click on the hide button
+    hideRecord(res, recordId, data){
+        Record.updateOne({
+            _id: recordId
+        }, data, (err,updatedRecord) => {
+            if(err) throw err;
+            res.json({
+                status:200,
+                message:"The record is now hide",
                 record: updatedRecord
             })
         })

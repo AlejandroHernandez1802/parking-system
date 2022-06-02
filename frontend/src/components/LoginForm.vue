@@ -11,8 +11,8 @@
                     </v-card-text>
                     <v-card-actions>
                         <v-layout row wrap justify-center>
-                            <v-btn color="success" @click="login()">Log in</v-btn>
-                            <v-btn color="warning" @click="hasAccount = false">Register</v-btn>
+                            <v-btn color="success" @click="login()" class="mr-3">Log in</v-btn>
+                            <v-btn color="warning" @click="hasAccount = false" class="ml-3">Register</v-btn>
                         </v-layout>
                     </v-card-actions>
             </v-card>
@@ -32,8 +32,8 @@
                     </v-card-text>
                     <v-card-actions>
                         <v-layout row wrap justify-center>
-                            <v-btn color="warning" @click="register()">Create account</v-btn>
-                            <v-btn color="success"  @click="hasAccount = true">Log in</v-btn>
+                            <v-btn color="warning" @click="register()" class="mr-3">Create account</v-btn>
+                            <v-btn color="success"  @click="hasAccount = true" class="ml-3">Log in</v-btn>
                         </v-layout>
                     </v-card-actions>
             </v-card>
@@ -62,18 +62,22 @@ import axios from 'axios';
                     password: this.loginData.password
                 }
 
-                axios.post('http://localhost:3000/api/login', data)
-                .then((res)=>{
-                    var admin = res.data.admin;
-                    if(admin != null){
-                        localStorage.setItem('admin', JSON.stringify(admin));
-                        this.$router.push('/admin');
+                if(data.email == undefined || data.password == undefined){
+                        alert("Sorry, you have to fill all the fields");
+                }
+                else{
+                        axios.post('http://localhost:3000/api/login', data)
+                        .then((res)=>{
+                            var admin = res.data.admin;
+                            if(admin != null){
+                                localStorage.setItem('admin', JSON.stringify(admin));
+                                this.$router.push('/records');
+                            }
+                            else{
+                                alert("Sorry, admin account not found.");
+                            }
+                        })
                     }
-                    else{
-                        alert("Sorry, admin account not found.");
-                    }
-                })
-
             },
 
             register(){
@@ -84,10 +88,18 @@ import axios from 'axios';
                     password : this.registerData.password
                 }
 
-                axios.post('http://localhost:3000/api/admins', data)
-                .then((res) => {
-                    console.log(res.data.admin);
-                })
+                if(data.name == undefined || data.phone == undefined || data.email == undefined || data.password == undefined){
+                    alert("Sorry, you have to fill all the fields");
+                }
+                else{
+                    axios.post('http://localhost:3000/api/admins', data)
+                    .then((res) => {
+                        console.log(res.data.admin);
+
+                        alert("Admin account successfully created");
+
+                    })
+                }
             }
         }
     }

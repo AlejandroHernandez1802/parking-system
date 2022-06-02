@@ -13,61 +13,91 @@ const { db } = require('./db')
 //Routes
 
 //Admin routes
+
+//Register admin
 app.post('/api/admins', (req, res) => {
     let data = req.body;
     db.addAdmin(res, data);
 })
 
+//Admin login
 app.post('/api/login', (req, res) => {
     let data = req.body;
     db.login(res, data);
 })
 
-
+//Update admin: failed
 app.put('api/admins/:id', (req,res) => {
     let { id } = req.params;
     let data = req.body;
     db.updateAdmin(res, id, data);
 })
 
-app.get('/api/admins/:id', (req, res) => {
+//Get specific admin 
+app.get('/api/admin/:id', (req, res) => {
     let {id} = req.params;
-    db.getAdmins(res, id);
+    db.getAdmin(res, id);
 })
 
+//Get all admins 
+app.get('/api/allAdmins/', (req, res) => {
+    db.getAllAdmins(res);
+})
+
+//Delete admin
 app.delete('/api/admins/:id', (req, res) => {
     let {id} = req.params;
     db.deleteAdmin(res, id);
 })
 
 
-//Parking records routes
-app.post('/api/records/:adminId', (req, res) => {
-    let data = req.body;
-    let {adminId} = req.params;
-    data.adminincharge = adminId;
 
-    var today = new Date();
-    data.checkindate = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-    data.checkintime = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+
+
+
+
+//Parking records routes
+
+//Create a new record
+app.post('/api/createRecord', (req, res) => {
+    let data = req.body;
+
     db.addRecord(res, data);
 })
 
-app.get('/api/records/:adminId', (req, res) => {
+//get specific records made by an admin
+app.get('/api/adminRecords/:adminId', (req, res) => {
     let {adminId} = req.params;
-    db.getRecords(res, adminId);
+    db.getAdminRecords(res, adminId);
 })
 
+//getActiveRecords
+app.get('/api/activeRecords', (req, res) => {
+    db.getActiveRecords(res);
+})
+
+
+//get all records
+app.get('/api/allRecords', (req, res) => {
+    db.getAllRecords(res);
+})
+
+
+//Update record hours when the user is out
 app.put('/api/userExit/:recordId', (req, res) => {
     let data = req.body;
     let{ recordId } = req.params;
 
-    data.status = false;
-
-    var today = new Date();
-    data.departuredate = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-    data.departuretime = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
     db.userExit(res, recordId, data);
+})
+
+
+//Update hide info when the admin click in the specific button
+app.put('/api/hideRecord/:recordId', (req, res) => {
+    let data = req.body;
+    let{ recordId } = req.params;
+
+    db.hideRecord(res, recordId, data);
 })
 
 
