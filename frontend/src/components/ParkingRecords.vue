@@ -1,11 +1,11 @@
 <template>
     <v-layout row wrap align-center id="main">
         <v-app-bar app color="indigo">
-            <v-btn color="red" @click="logOut()" icon>
+            <v-btn color="red" @click="logOut()" class="mr-5" fab small>
                 <v-icon>mdi-close</v-icon>
             </v-btn>
             <h2 class="white--text">Un saludo, {{admin.name}}</h2>
-            <v-btn color="green" @click="createRecord()" class="ml-16" icon>
+            <v-btn color="green" @click="createRecord()" class="ml-16 mr-5" fab small>
                 <v-icon>mdi-plus</v-icon>
             </v-btn>
             <h4 class="white--text">Registrar nuevo vehículo</h4>
@@ -67,7 +67,7 @@
         },
         mounted() {
             this.admin = JSON.parse(localStorage.getItem('admin'));
-            this.getAllRecords();
+            this.getActiveRecords();
         },
         methods:{
             getActiveRecords(){
@@ -78,6 +78,7 @@
                 .then((res)=>{
                     this.records = res.data.records;
                 })
+                
             },
             getAllRecords(){
 

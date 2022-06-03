@@ -35,7 +35,8 @@ import axios from 'axios'
         data(){
             return{
                 admin: new Object(),
-                createRecordData: new Object()
+                createRecordData: new Object(),
+                activeRecords: [],
             }
         },
         mounted() {
@@ -56,12 +57,23 @@ import axios from 'axios'
                     checkindate: today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate(),
                     checkintime: today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds()
                 }
-                axios.post('http://localhost:3000/api/createRecord', data)
-                .then((res)=>{
-                    console.log(res.data.record)
-                })
 
-                this.$router.push('/records');
+                axios.get('http://localhost:3000/api/activeRecords')
+                .then((res) => {
+                    this.activeRecords = res.data.records;
+                    var activeRecordsLength = this.activeRecords.length;
+
+                    if(activeRecordsLength == 10){
+                    alert("Sorry there is not enough space in the parking lot for another vehicle. Come again later.");
+                    }
+                    else{
+                        axios.post('http://localhost:3000/api/createRecord', data)
+                        .then((res)=>{
+                            console.log(res.data.record)
+                        })
+                        this.$router.push('/records');
+                    }
+                })                
             }
         }
     }
